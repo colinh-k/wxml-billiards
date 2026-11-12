@@ -1,0 +1,46 @@
+# -modernize-use-trailing-return-type,
+Checks: |
+  # uncomment to renable clang-tidy checks. i disabled them since clangd still runs clang-tidy even tho i dsiabled it in cmake
+  # *,
+  -abseil-*,
+  -altera-*,
+  -android-*,
+  -fuchsia-*,
+  -google-*,
+  -llvm*,
+  -zircon-*,
+  -readability-else-after-return,
+  -readability-static-accessed-through-instance,
+  -readability-avoid-const-params-in-decls,
+  -cppcoreguidelines-non-private-member-variables-in-classes,
+  -misc-non-private-member-variables-in-classes,
+  -misc-no-recursion,
+  -misc-use-anonymous-namespace,
+  -misc-use-internal-linkage'
+
+WarningsAsErrors: '*'
+HeaderFilterRegex: ''
+FormatStyle: none
+
+CheckOptions:
+  - key: readability-identifier-length.IgnoredVariableNames
+    value: 'x|y|z'
+  - key: readability-identifier-length.IgnoredParameterNames
+    value: 'x|y|z'
+
+# TODO: i think these should allow clang-tidy to run with gcc-compiled projects... but test this and see if it works with gcc
+ExtraArgs:
+  - -Wno-ignored-optimization-argument
+  - -Wno-unused-command-lind-argument
+  - -Wno-unknown-warning-option
+
+UseColor: true
+
+# https://github.com/clang-tidy-infra/triage-agent/issues/244
+# clang-tidy emits errors when encountering these flags emitted by cmake when compiling with gcc. this config option removes the offending flags (i think)
+# NOTE: these flags only appear in the ubuntu-latest github runner... so maybe its not necessary to have these here. but at least this shows the canonical solution for removing flags that clang-tidy doesnt recognize
+# NOTE: this does not solve the above issue since it requires clang-tidy version 22, and github actions runner only has up to version 18...
+RemovedArgs:
+  - -fdeps-format
+  - -fmodule-mapper
+  - -fmodules-ts

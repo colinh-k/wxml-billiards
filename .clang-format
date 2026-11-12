@@ -1,0 +1,15 @@
+BasedOnStyle: GNU
+IndentWidth: 4
+SpaceBeforeParens: ControlStatements
+
+BreakBeforeBraces: Allman
+# do not indent the definitions inside 'extern "C" {}' blocks
+IndentExternBlock: NoIndent
+# put one parameter on its own line, unless they all fit on the first line
+BinPackParameters: OnePerLine
+SpacesBeforeTrailingComments: 2
+
+UseTab: Never
+AllowShortFunctionsOnASingleLine: None
+FixNamespaceComments: true
+

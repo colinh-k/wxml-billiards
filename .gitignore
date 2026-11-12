@@ -1,0 +1,9 @@
+build/
+.cache/
+.venv/
+__pycache__/
+.DS_Store
+compile_commands.json
+
+# do not save profiles in public repo
+profiles/

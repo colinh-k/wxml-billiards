@@ -1,0 +1,207 @@
+{
+    "version": 10,
+    "configurePresets": [
+        {
+            "name": "base-config",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/cmake/toolchains/homebrew-clang.cmake",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_STANDARD": "23",
+                "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+                "CMAKE_CXX_EXTENSIONS": "OFF",
+                "CMAKE_COLOR_DIAGNOSTICS": "ON",
+                "CMAKE_PREFIX_PATH": "$env{HOMEBREW_PREFIX}/opt/llvm/bin/",
+                "ENABLE_CLANG_TIDY": false,
+                "ENABLE_TESTING": true,
+                "ENABLE_SANITIZERS": true,
+                "RESULTS_DIRPATH": "data/version_04/halfplane/"
+            }
+        },
+        {
+            "name": "debug",
+            "inherits": "base-config",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "inherits": "base-config",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ENABLE_SANITIZERS": false
+            }
+        },
+        {
+            "name": "relwithdebinfo",
+            "inherits": "base-config",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "ENABLE_SANITIZERS": false
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "base-build",
+            "hidden": true,
+            "jobs": 4
+        },
+        {
+            "name": "debug",
+            "inherits": "base-build",
+            "configurePreset": "debug"
+        },
+        {
+            "name": "debug-run",
+            "inherits": "base-build",
+            "configurePreset": "debug",
+            "targets": "run-main"
+        },
+        {
+            "name": "release",
+            "inherits": "base-build",
+            "configurePreset": "release"
+        },
+        {
+            "name": "release-run",
+            "inherits": "base-build",
+            "configurePreset": "release",
+            "targets": "run-main"
+        },
+        {
+            "name": "relwithdebinfo",
+            "inherits": "base-build",
+            "configurePreset": "relwithdebinfo"
+        },
+        {
+            "name": "relwithdebinfo-run",
+            "inherits": "base-build",
+            "configurePreset": "relwithdebinfo",
+            "targets": "run-main"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "base-test",
+            "hidden": true,
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        },
+        {
+            "name": "debug",
+            "inherits": "base-test",
+            "configurePreset": "debug"
+        },
+        {
+            "name": "release",
+            "inherits": "base-test",
+            "configurePreset": "release"
+        },
+        {
+            "name": "relwithdebinfo",
+            "inherits": "base-test",
+            "configurePreset": "relwithdebinfo"
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "debug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "debug"
+                },
+                {
+                    "type": "build",
+                    "name": "debug"
+                },
+                {
+                    "type": "test",
+                    "name": "debug"
+                }
+            ]
+        },
+        {
+            "name": "debug-run",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "debug"
+                },
+                {
+                    "type": "build",
+                    "name": "debug-run"
+                }
+            ]
+        },
+        {
+            "name": "release",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "release"
+                },
+                {
+                    "type": "build",
+                    "name": "release"
+                },
+                {
+                    "type": "test",
+                    "name": "release"
+                }
+            ]
+        },
+        {
+            "name": "release-run",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "release"
+                },
+                {
+                    "type": "build",
+                    "name": "release-run"
+                }
+            ]
+        },
+        {
+            "name": "relwithdebinfo",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "relwithdebinfo"
+                },
+                {
+                    "type": "build",
+                    "name": "relwithdebinfo"
+                },
+                {
+                    "type": "test",
+                    "name": "relwithdebinfo"
+                }
+            ]
+        },
+        {
+            "name": "relwithdebinfo-run",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "relwithdebinfo"
+                },
+                {
+                    "type": "build",
+                    "name": "relwithdebinfo-run"
+                }
+            ]
+        }
+    ]
+}
